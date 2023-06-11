@@ -2,13 +2,17 @@ var data =  require("./fakeData");
 
 module.exports = function(req, res) {
   
-    var name =  req.query.name;
+    const { id } =  req.params;
 
-    for(let i = 0; i < data.length;  i++) {
-        if(i.name == name) {
-            data[i] = null;
-        }
+    const HTTP_NOT_FOUND = 404;
+
+    const userIndex = data.findIndex((user) => user.id == id);
+
+    if (userIndex < 0) {
+        return res.status(HTTP_NOT_FOUND).send("User not Found");
     }
+
+    data.splice(userIndex, 1);
 
     res.send("success");
 
